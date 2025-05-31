@@ -74,3 +74,10 @@ class GroupSerializer(serializers.ModelSerializer):
         group = Group.objects.create(**validated_data)
         group.permissions.set(permission_ids)
         return group
+    
+    def update(self, instance, validated_data):
+        permission_ids = validated_data.pop('permission_ids', [])
+        instance.name = validated_data.get('name', instance.name)
+        instance.save()
+        instance.permissions.set(permission_ids)
+        return instance
