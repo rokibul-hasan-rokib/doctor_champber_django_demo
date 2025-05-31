@@ -31,3 +31,24 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
         return user;
 
+class UserLoginSerializer(serializers.Serializer):
+    username = serializers.CharField(max_length=150)
+    password = serializers.CharField(write_only=True, min_length=8)
+
+    def validate(self, attrs):
+        user = User.objects.filter(username=attrs['username']).first()
+        if user is None or not user.check_password(attrs['password']):
+            raise serializers.ValidationError("Invalid username or password")
+        return attrs
+    
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'role']
+        read_only_fields = ['id', 'role']
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['role'] = instance.groups.first().name if instance.groups.exists() else 'User'
+        return representation
+    
