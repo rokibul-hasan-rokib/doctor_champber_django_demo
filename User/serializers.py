@@ -24,7 +24,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
          
 
     def create(self, validated_data):
-        role = validated_date.pop('role','User')
+        role = validated_data.pop('role','User')
 
         user = User.objects.create_user(
             username=validated_data['username'],
