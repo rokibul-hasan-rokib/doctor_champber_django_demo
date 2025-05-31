@@ -58,3 +58,19 @@ class PermissionSerializer(serializers.ModelSerializer):
             fields = ['id', 'name', 'codename']
 
 class GroupSerializer(serializers.ModelSerializer):
+    permissions = PermissionSerializer(many=True, read_only=True)
+    permissions_ids = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Permission.objects.all(),
+        source='permissions',
+        write_only=True
+    )
+
+    class Meta:
+        model = Group
+        fields = ['id', 'name', 'permissions', 'permissions_ids']
+    def create(self, validated_data):
+        permission_ids = validated_data.pop('permission_ids', [])
+        group = Group.objects.create(**validated_data)
+        group.permissions.set(permission_ids)
+        return group
