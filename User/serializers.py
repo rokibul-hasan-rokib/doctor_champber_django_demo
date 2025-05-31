@@ -16,3 +16,18 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         super(UserRegistrationSerializer,self).__init__(*args, **kwargs)
         group_choices = [(group.name, group.name.capitalize()) for group in Group.objects.all()]
         self.fields['role'].choices = group_choices
+
+    def validation_role(self, value):
+        role = validated_date.pop('role','User')
+
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            password=validated_data['password'],
+            email=validated_data['email']
+        )
+
+        group = Group.objects.get(name=value)
+        user.groups.add(group)
+
+        return user;
+
