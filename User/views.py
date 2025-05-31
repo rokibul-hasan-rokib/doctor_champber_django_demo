@@ -83,3 +83,9 @@ class DoctorOnlyView(APIView):
 
     def get(self, request):
         return Response({"message": "This is a doctor-only view"}, status=status.HTTP_200_OK)
+    
+class UserOnlyView(APIView):
+    permission_classes = [IsAuthenticated, IsUser]
+
+    def get(self, request):
+        return Response({"message": "This is a user-only view"}, status=status.HTTP_200_OK)
