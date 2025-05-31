@@ -72,3 +72,10 @@ class UserInfoView(APIView):
         serializer = UserSerializer(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
+class AdminOnlyView(APIView):
+    permission_classes = [IsAuthenticated, IsAdmin]
+
+    def get(self, request):
+        return Response({"message": "This is an admin-only view"}, status=status.HTTP_200_OK)
+    
+    
