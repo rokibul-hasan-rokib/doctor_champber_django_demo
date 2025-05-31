@@ -89,3 +89,33 @@ class UserOnlyView(APIView):
 
     def get(self, request):
         return Response({"message": "This is a user-only view"}, status=status.HTTP_200_OK)
+    
+
+class GroupViewSet(viewsets.ModelViewSet):
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+    permission_classes = [permissions.IsAuthenticated, IsAdminOrDoctor]
+
+    def list(self, request, *args, **kwargs):
+        if is_doctor(request.user):
+            self.queryset = Group.objects.filter(name__startswith='Doctor')
+        elif is_admin(request.user):
+            self.queryset = Group.objects.all()
+        else:
+            self.queryset = Group.objects.none()  # Return no permissions if unauthorized role
+        return super().list(request, *args, **kwargs)
+
+class PermissionViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Permission.objects.all()
+    serializer_class = PermissionSerializer
+    permission_classes = [permissions.IsAuthenticated, IsAdminOrDoctor]
+
+    def list(self, request, *args, **kwargs):
+        if is_doctor(request.user):
+            self.queryset = Permission.objects.filter(codename__in=['view_patient', 'add_note'])  # customize as needed
+        elif is_admin(request.user):
+            self.queryset = Permission.objects.all()
+        else:
+            self.queryset = Permission.objects.none()  # Return no permissions if unauthorized role
+        return super().list(request, *args, **kwargs)
+
