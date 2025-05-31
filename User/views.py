@@ -36,4 +36,19 @@ class LoginUser(APIView):
                     'username': user.username
                 }, status=status.HTTP_200_OK)
             return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)                                                                                         
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+
+class UserViewSet(APIView):
+    def post(self, request):
+        refresh = request.data.get('refresh')
+        if refresh:
+            try:
+                refresh_token = RefreshToken(refresh)
+                return Response({
+                    'refresh': str(refresh_token),
+                    'access': str(refresh_token.access_token),
+                    'user_id': refresh_token['user_id'],
+                    'username': refresh_token['username']
+                }, status=status.HTTP_200_OK)
+            except Exception as e:
+                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)                         
