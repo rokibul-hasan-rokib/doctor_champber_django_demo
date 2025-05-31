@@ -52,3 +52,9 @@ class UserSerializer(serializers.ModelSerializer):
         representation['role'] = instance.groups.first().name if instance.groups.exists() else 'User'
         return representation
     
+class PermissionSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = Permission
+            fields = ['id', 'name', 'codename']
+
+class GroupSerializer(serializers.ModelSerializer):
