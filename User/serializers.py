@@ -18,6 +18,12 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         self.fields['role'].choices = group_choices
 
     def validation_role(self, value):
+        if value == 'Admin':
+            raise serializers.ValidationError("Role 'Admin' is reserved and cannot be used.")
+        return value
+         
+
+    def create(self, validated_data):
         role = validated_date.pop('role','User')
 
         user = User.objects.create_user(
@@ -26,7 +32,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             email=validated_data['email']
         )
 
-        group = Group.objects.get(name=value)
+        group = Group.objects.get(name=role)
         user.groups.add(group)
 
         return user;
