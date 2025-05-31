@@ -11,3 +11,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['username', 'password', 'email', 'role']
+
+    def __init__(self, *args, **kwargs):
+        super(UserRegistrationSerializer,self).__init__(*args, **kwargs)
+        group_choices = [(group.name, group.name.capitalize()) for group in Group.objects.all()]
+        self.fields['role'].choices = group_choices
