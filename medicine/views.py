@@ -22,6 +22,15 @@ class MedicineCompanyViewSet(viewsets.ModelViewSet):
         if is_doctor(self.request.user):
             return MedicineCompanyAdminSerializer
         return MedicineCompanySerializer
+    
+class MedicineViewSet(viewsets.ModelViewSet):
+    queryset = Medicine.objects.all()
+    serializer_class = MedicineSerializer
+    permission_classes = [IsAdminOrReadOnly]
+    pagination_class = MedicinePagination
+    filter_backends = [DjangoFilterBackend]
+    search_fields = ['name', 'description', 'strength']
+    filterset_fields = ['is_prescription_required']  # Fields to filter by
 
 
 
