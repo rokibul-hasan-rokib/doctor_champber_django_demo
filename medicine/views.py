@@ -6,6 +6,7 @@ from .serializers import MedicineSerializer, MedicineCompanySerializer, Medicine
 from users.permissions import (IsAuthenticatedOrAdminCreate, IsAdminOrReadOnly, is_admin,
                                IsAdminOrDoctor, is_doctor)
 from rest_framework.exceptions import PermissionDenied
+from rest_framework import viewsets
 
 class MedicinePagination(PageNumberPagination):
     page_size = 20
