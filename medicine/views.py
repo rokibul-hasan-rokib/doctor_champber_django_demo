@@ -12,7 +12,16 @@ class MedicinePagination(PageNumberPagination):
     page_size_query_param = 'page_size'
     max_page_size = 100
 
+class MedicineCompanyViewSet(viewsets.ModelViewSet):
+    queryset = MedicineCompany.objects.all()
+    serializer_class = MedicineCompanySerializer
+    permission_classes = [IsAdminOrReadOnly]
+    pagination_class = MedicinePagination
 
+    def get_serializer_class(self):
+        if is_doctor(self.request.user):
+            return MedicineCompanyAdminSerializer
+        return MedicineCompanySerializer
 
 
 
