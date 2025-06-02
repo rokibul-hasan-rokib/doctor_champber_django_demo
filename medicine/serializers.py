@@ -17,5 +17,9 @@ class MedicineSerializer(serializers.ModelSerializer):
     created_by_name = serializers.ReadOnlyField(source='created_by.username')
     class Meta:
         model = Medicine
-        fields = '__all__'
+        fields = [
+            'id', 'name', 'description', 'composition', 'price', 'manufacturer',
+            'manufacturer_name', 'dosage_form', 'strength', 'is_prescription_required',
+            'stock_quantity', 'image', 'created_by', 'created_by_username', 'created_at', 'updated_at'
+        ]
         read_only_fields = ['created_by', 'created_by_username', 'created_at', 'updated_at']
