@@ -33,3 +33,5 @@ class MedicineViewSet(viewsets.ModelViewSet):
     search_fields = ['name', 'description', 'strength']
     filterset_fields = ['is_prescription_required']  # Fields to filter by
 
+
+
