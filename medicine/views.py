@@ -24,6 +24,7 @@ class MedicineCompanyViewSet(viewsets.ModelViewSet):
             return MedicineCompanyAdminSerializer
         return MedicineCompanySerializer
     
+    
 class MedicineViewSet(viewsets.ModelViewSet):
     queryset = Medicine.objects.all()
     serializer_class = MedicineSerializer
