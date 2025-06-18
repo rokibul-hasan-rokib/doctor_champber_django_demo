@@ -23,3 +23,6 @@ class MedicineSerializer(serializers.ModelSerializer):
             'stock_quantity', 'image', 'created_by', 'created_by_username', 'created_at', 'updated_at'
         ]
         read_only_fields = ['created_by', 'created_by_username', 'created_at', 'updated_at']
+
+
+    
