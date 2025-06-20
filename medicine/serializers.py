@@ -14,6 +14,7 @@ class MedicineCompanyAdminSerializer(serializers.ModelSerializer):
 
 
 
+
 class MedicineSerializer(serializers.ModelSerializer):
     manufracturer_name = serializers.CharField(source='manufacturer.name', read_only=True)
     created_by_name = serializers.ReadOnlyField(source='created_by.username')
